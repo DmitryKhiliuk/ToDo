@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import s from './TDMain.module.sass'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getTodoListTC} from "../../Redux/Todolist-reducer";
 import {ThunkDispatch} from "redux-thunk";
 import {AppDispatch, AppRootStateType} from "../../Redux/Store";
-import {ActionType} from "../../types";
+import {ActionType, TodoListsStateType} from "../../types";
+import {TDList} from "./Todolist/TDList";
 
 export const TDMain = () => {
-
+    const todolists =  useSelector<AppRootStateType, TodoListsStateType[]>(state => state.todolist)
     const dispatch = useDispatch<ThunkDispatch<AppRootStateType,unknown,ActionType> & AppDispatch>()
 
     useEffect(()=> {
@@ -16,7 +17,10 @@ export const TDMain = () => {
 
     return (
         <div>
-            {}
+            {todolists.map((tl) => {
+                return <TDList key={tl.id}
+                               todoListId={tl.id}/>
+            })}
         </div>
     );
 };

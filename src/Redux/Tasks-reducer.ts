@@ -1,4 +1,4 @@
-import {Action, Dispatch} from "redux";
+import {Dispatch} from "redux";
 import {todolistAPI} from "../Api/api";
 import {ActionType, TasksStateType, TaskType} from "../types";
 
@@ -13,11 +13,13 @@ export const taskReducer = (state = initialState, action: ActionType):TasksState
             })
             return copyState
         }
+        case "TASKS/GET-TASKS":
+            return {...state, [action.todolistId]: action.tasks.map((t) => t)}
         default:
     }       return state
 }
-
-const getTasksAC = (tasks:TaskType[], todolistId:string) => {
+export type getTasksACType = ReturnType<typeof getTasksAC>
+export const getTasksAC = (tasks:TaskType[], todolistId:string) => {
     return {
         type: 'TASKS/GET-TASKS',
         tasks,
@@ -25,11 +27,11 @@ const getTasksAC = (tasks:TaskType[], todolistId:string) => {
     } as const
 }
 
-/*const getTasksTC = () => {
+export const getTasksTC = (todolistId:string) => {
     return (dispatch:Dispatch) => {
         todolistAPI.getTasks(todolistId)
             .then( (res) => {
                 dispatch(getTasksAC(res.data.items, todolistId))
             })
     }
-}*/
+}
