@@ -1,10 +1,17 @@
 import React from 'react';
 import s from './Tasks.module.sass'
+import {Checkbox} from "@mui/material";
+import {TitleUpdate} from "../../../../Components/TitleUpdate/TitleUpdate";
 
-export const Tasks = () => {
+type TasksPropsType = {
+    title: string
+}
+
+export const Tasks = (props:TasksPropsType) => {
     return (
         <div>
-
+            <Checkbox />
+            <TitleUpdate title={props.title}/>
         </div>
     );
 };
