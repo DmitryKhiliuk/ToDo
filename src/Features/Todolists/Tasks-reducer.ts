@@ -1,39 +1,36 @@
-import {Dispatch} from "redux";
 import {todolistAPI} from "../../Api/api";
-import {TasksStateType, TaskType} from "../../types";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {getTodoListAC} from "./Todolist-reducer";
+import {TasksStateType} from "../../types";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {getTodoListTC} from "./Todolist-reducer";
+
 
 const initialState:TasksStateType = {}
+
+export const getTasksTC = createAsyncThunk('tasks/getTasks', async(todolistId:string, thunkAPI) => {
+    const res = await todolistAPI.getTasks(todolistId)
+    return {tasks: res.data.items, todolistId}
+})
 
 const slice = createSlice({
     name: 'tasks',
     initialState: initialState,
     reducers: {
-        getTasksAC(state, action: PayloadAction<{tasks:TaskType[], todolistId:string}>){
-            state[action.payload.todolistId] = action.payload.tasks
-        }
+
     },
     extraReducers: builder => {
-        builder.addCase(getTodoListAC, (state, action) => {
+        builder.addCase(getTodoListTC.fulfilled, (state, action) => {
             action.payload.todolists.forEach((tl: any) => {
                 state[tl.id] = []
             })
+        });
+        builder.addCase(getTasksTC.fulfilled, (state, action) => {
+            state[action.payload.todolistId] = action.payload.tasks
         })
     }
 })
 
 export const taskReducer = slice.reducer
-export const {getTasksAC} = slice.actions
 
 
 
-export const getTasksTC = (todolistId:string) => {
-    return (dispatch:Dispatch) => {
-        todolistAPI.getTasks(todolistId)
-            .then( (res) => {
-                const tasks = res.data.items
-                dispatch(getTasksAC({tasks, todolistId}))
-            })
-    }
-}
+

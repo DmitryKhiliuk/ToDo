@@ -19,5 +19,6 @@ export const store = configureStore({
 export type AppRootStateType = ReturnType<RootReducerType>
 export type AppDispatch = typeof store.dispatch
 
+
 // @ts-ignore
 window.store = store;
