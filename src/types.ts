@@ -1,7 +1,6 @@
-import {getTodoListACType} from "./Redux/Todolist-reducer";
-import {getTasksACType} from "./Redux/Tasks-reducer";
 
-export type ActionType = getTodoListACType | getTasksACType
+
+
 
 export type TodoListsResponseType = {
     id: string

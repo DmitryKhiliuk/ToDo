@@ -1,17 +1,16 @@
 import React, {useEffect} from 'react';
-import s from './TDList.module.sass'
-import {getTodoListTC} from "../../../Redux/Todolist-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
-import {AppDispatch, AppRootStateType} from "../../../Redux/Store";
-import {ActionType, TaskResponseType, TasksStateType, TaskType, TodoListsStateType} from "../../../types";
-import {getTasksTC} from "../../../Redux/Tasks-reducer";
+import {AppDispatch, AppRootStateType} from "../../../App/store";
+import {TasksStateType} from "../../../types";
+import {getTasksTC} from "../Tasks-reducer";
 import {TitleUpdate} from "../../../Components/TitleUpdate/TitleUpdate";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import {Input} from "../../../Components/Input/Input";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import {Tasks} from "./Tasks/Tasks";
+import {Action} from "redux";
 
 type TDListType = {
     todoListId: string
@@ -21,7 +20,7 @@ type TDListType = {
 
 export const TDList = (props:TDListType) => {
 
-    const dispatch = useDispatch<ThunkDispatch<AppRootStateType,unknown,ActionType> & AppDispatch>()
+    const dispatch = useDispatch<ThunkDispatch<AppRootStateType,unknown,Action> & AppDispatch>()
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
     useEffect(()=> {

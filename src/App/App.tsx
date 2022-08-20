@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {TDMain} from "./Features/Todolists/TDMain";
+import {TDMain} from "../Features/Todolists/TDMain";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import { green, deepPurple } from '@mui/material/colors';
 

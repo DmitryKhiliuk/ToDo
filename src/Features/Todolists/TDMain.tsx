@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
-import s from './TDMain.module.sass'
 import {useDispatch, useSelector} from "react-redux";
-import {getTodoListTC} from "../../Redux/Todolist-reducer";
+import {getTodoListTC} from "./Todolist-reducer";
 import {ThunkDispatch} from "redux-thunk";
-import {AppDispatch, AppRootStateType} from "../../Redux/Store";
-import {ActionType, TodoListsStateType} from "../../types";
+import {AppDispatch, AppRootStateType} from "../../App/store";
+import {TodoListsStateType} from "../../types";
 import {TDList} from "./Todolist/TDList";
 import {Input} from "../../Components/Input/Input";
+import {Action} from "redux";
 
 export const TDMain = () => {
     const todolists =  useSelector<AppRootStateType, TodoListsStateType[]>(state => state.todolist)
-    const dispatch = useDispatch<ThunkDispatch<AppRootStateType,unknown,ActionType> & AppDispatch>()
+    const dispatch = useDispatch<ThunkDispatch<AppRootStateType,unknown,Action> & AppDispatch>()
 
     useEffect(()=> {
         dispatch(getTodoListTC())
