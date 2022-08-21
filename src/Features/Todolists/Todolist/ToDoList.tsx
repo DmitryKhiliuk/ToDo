@@ -1,8 +1,5 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {ThunkDispatch} from "redux-thunk";
-import {AppDispatch, AppRootStateType} from "../../../App/store";
-import {TasksStateType} from "../../../types";
+import {useAppDispatch, useAppSelector} from "../../../App/store";
 import {getTasksTC} from "../Tasks-reducer";
 import {TitleUpdate} from "../../../Components/TitleUpdate/TitleUpdate";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,7 +7,9 @@ import Button from "@mui/material/Button";
 import {Input} from "../../../Components/Input/Input";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import {Tasks} from "./Tasks/Tasks";
-import {Action} from "redux";
+import {Divider, IconButton} from "@mui/material";
+import CreateIcon from "@mui/icons-material/Create";
+import s from './ToDoList.module.sass'
 
 type TDListType = {
     todoListId: string
@@ -18,10 +17,10 @@ type TDListType = {
 
 }
 
-export const TDList = (props:TDListType) => {
+export const ToDoList = (props:TDListType) => {
 
-    const dispatch = useDispatch<ThunkDispatch<AppRootStateType,unknown,Action> & AppDispatch>()
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const dispatch = useAppDispatch();
+    const tasks = useAppSelector((state) => state.tasks)
 
     useEffect(()=> {
         dispatch(getTasksTC(props.todoListId))
@@ -30,11 +29,21 @@ export const TDList = (props:TDListType) => {
 
     return (
         <div>
-            <TitleUpdate title={props.title}/>
-            <Button variant="outlined" size="small" startIcon={<DeleteIcon />}>
-                Delete
-            </Button>
-            <Input/>
+            <div className={s.titleBlock}>
+                <div className={s.title} >
+                    <TitleUpdate title={props.title}/>
+                </div>
+                <div>
+                    <IconButton aria-label="delete" size="small" color={'primary'}>
+                        <CreateIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" size="small" color={'primary'}>
+                        <DeleteIcon />
+                    </IconButton>
+                </div>
+            </div>
+            <Divider style={{margin: 10}} />
+            <Input />
             {tasks[props.todoListId].map((task) => {
                 return <Tasks key={task.id}
                               title={task.title}/>
