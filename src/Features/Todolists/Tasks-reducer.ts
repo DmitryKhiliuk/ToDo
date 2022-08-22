@@ -29,7 +29,7 @@ const slice = createSlice({
     }
 })
 
-export const taskReducer = slice.reducer
+export const tasksReducer = slice.reducer
 
 
 

@@ -2,7 +2,6 @@ import React from 'react';
 import s from './App.module.sass';
 import {ToDoMain} from "../Features/Todolists/ToDoMain";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {green, deepPurple} from '@mui/material/colors';
 import Header from "../Components/Header/Header";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../Features/Auth/Login";

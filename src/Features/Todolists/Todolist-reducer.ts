@@ -34,6 +34,6 @@ const slice = createSlice({
     }
 })
 
-export const todolistReducer = slice.reducer
+export const todolistsReducer = slice.reducer
 
 

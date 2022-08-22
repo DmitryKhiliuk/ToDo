@@ -7,7 +7,7 @@ import {Grid, Paper} from "@mui/material";
 import s from './ToDoMain.module.sass'
 
 export const ToDoMain = () => {
-    const todolists = useAppSelector((state) => state.todolist)
+    const todolists = useAppSelector((state) => state.todolists)
     const dispatch = useAppDispatch();
 
     useEffect(() => {
