@@ -1,6 +1,6 @@
 import {todolistAPI} from "../../Api/api";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {TodolistDomainType, TodolistType} from "../../types";
+import {TodolistDomainType} from "../../Api/types";
 
 export const getTodoListTC = createAsyncThunk('todolist/getTodoList', async( param,thunkAPI) => {
     const res = await todolistAPI.getTodolist()
@@ -10,7 +10,7 @@ export const getTodoListTC = createAsyncThunk('todolist/getTodoList', async( par
 
 export const addTodoListTC = createAsyncThunk('todolist/addTodoList', async(title:string, thunkAPI) => {
 
-        const res = await todolistAPI.addTodolist(title)
+        const res = await todolistAPI.createTodolist(title)
         const todolist = res.data.data.item
 
             return {todolist}
