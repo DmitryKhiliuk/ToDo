@@ -1,22 +1,22 @@
-
-
-
-
-export type TodoListsResponseType = {
-    id: string
-    addedDate: string
-    order: number
-    title: string
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
-
-export type FilterType = 'all' | 'active' | 'completed'
-
-export type TodoListsStateType = {
+// types
+export type TodolistType = {
     id: string
+    title: string
     addedDate: string
     order: number
-    title: string
-    filter: FilterType
+}
+export type FieldErrorType = { field: string; error: string }
+export type ResponseType<D = {}> = {
+    resultCode: number
+    messages: Array<string>
+    fieldsErrors?: Array<FieldErrorType>
+    data: D
 }
 
 export enum TaskStatuses {
@@ -37,7 +37,6 @@ export enum TaskPriorities {
 export type TaskType = {
     description: string
     title: string
-    completed: boolean
     status: TaskStatuses
     priority: TaskPriorities
     startDate: string
@@ -47,13 +46,36 @@ export type TaskType = {
     order: number
     addedDate: string
 }
-
-export type TaskResponseType = {
-    items: TaskType[]
+export type UpdateTaskModelType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+export type GetTasksResponse = {
+    error: string | null
     totalCount: number
-    error: string
+    items: TaskType[]
 }
 
-export type TasksStateType = {
-    [key:string]: TaskType[]
+export type UpdateDomainTaskModelType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: TaskPriorities
+    startDate?: string
+    deadline?: string
 }
+export type TasksStateType = {
+    [key: string]: Array<TaskType>
+}
+
+export type FilterValuesType = 'all' | 'active' | 'completed';
+export type TodolistDomainType = TodolistType & {
+    filter: FilterValuesType
+    entityStatus: RequestStatusType
+}
+
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

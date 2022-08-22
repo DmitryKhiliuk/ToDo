@@ -17,42 +17,47 @@ type TDListType = {
 
 }
 
-export const ToDoList = (props:TDListType) => {
+export const ToDoList = (props: TDListType) => {
 
     const dispatch = useAppDispatch();
     const tasks = useAppSelector((state) => state.tasks)
 
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(getTasksTC(props.todoListId))
-    },[])
+    }, [])
 
+    const addTask = () => {
+
+    }
 
     return (
         <div>
             <div className={s.titleBlock}>
-                <div className={s.title} >
+                <div className={s.title}>
                     <TitleUpdate title={props.title}/>
                 </div>
                 <div>
                     <IconButton aria-label="delete" size="small" color={'primary'}>
-                        <CreateIcon />
+                        <CreateIcon/>
                     </IconButton>
                     <IconButton aria-label="delete" size="small" color={'primary'}>
-                        <DeleteIcon />
+                        <DeleteIcon/>
                     </IconButton>
                 </div>
             </div>
-            <Divider style={{margin: 10}} />
-            <Input />
-            {tasks[props.todoListId].map((task) => {
+            <Divider style={{margin: 10}}/>
+            <Input getValue={addTask}/>
+            {tasks[props.todoListId] && tasks[props.todoListId].map((task) => {
                 return <Tasks key={task.id}
                               title={task.title}/>
             })}
-            <ButtonGroup size="small"  variant="outlined">
+
+            <ButtonGroup size="small" variant="contained" fullWidth={true}>
                 <Button>One</Button>
                 <Button>Two</Button>
                 <Button>Three</Button>
             </ButtonGroup>
+
         </div>
     );
 };

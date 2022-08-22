@@ -1,7 +1,7 @@
 import {todolistAPI} from "../../Api/api";
-import {TasksStateType} from "../../types";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {getTodoListTC} from "./Todolist-reducer";
+import {TasksStateType} from "../../types";
 
 
 const initialState:TasksStateType = {}

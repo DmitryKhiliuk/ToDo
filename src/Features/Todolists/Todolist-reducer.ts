@@ -1,8 +1,6 @@
-import {TodoListsResponseType, TodoListsStateType} from "../../types";
 import {todolistAPI} from "../../Api/api";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-
-const initialState:TodoListsStateType[] = []
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {TodolistDomainType, TodolistType} from "../../types";
 
 export const getTodoListTC = createAsyncThunk('todolist/getTodoList', async( param,thunkAPI) => {
     const res = await todolistAPI.getTodolist()
@@ -10,17 +8,28 @@ export const getTodoListTC = createAsyncThunk('todolist/getTodoList', async( par
     return {todolists}
 })
 
+export const addTodoListTC = createAsyncThunk('todolist/addTodoList', async(title:string, thunkAPI) => {
+
+        const res = await todolistAPI.addTodolist(title)
+        const todolist = res.data.data.item
+
+            return {todolist}
+
+
+
+
+})
+
 const slice = createSlice({
     name: 'todolists',
-    initialState: initialState,
-    reducers: {
-        getTodoListAC(state, action: PayloadAction<{ todolists: TodoListsResponseType[] }>) {
-            return action.payload.todolists.map(tl => ({...tl, filter: 'all', /*entityStatus: 'idle'*/}))
-        }
-    },
+    initialState: [] as TodolistDomainType[],
+    reducers: {},
     extraReducers: builder => {
         builder.addCase(getTodoListTC.fulfilled, (state, action) => {
-            return action.payload.todolists.map(tl => ({...tl, filter: 'all', /*entityStatus: 'idle'*/}))
+            return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
+        })
+        builder.addCase(addTodoListTC.fulfilled, (state, action) => {
+            state.unshift({...action.payload.todolist, filter: 'all', entityStatus: 'idle' })
         })
     }
 })
