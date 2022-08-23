@@ -1,24 +1,17 @@
 import React from 'react'
-import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material'
-import {FormikHelpers, useFormik} from 'formik'
-import {useSelector} from 'react-redux'
-import {login} from './auth-reducer'
-import {selectIsLoggedIn} from './selectors'
-import {authActions} from './index'
-import {Action} from 'redux'
-import {useActions, useAppDispatch} from '../../utils/redux-utils'
+import {useFormik} from 'formik'
+import {useDispatch, useSelector} from 'react-redux'
+import {loginTC} from './auth-reducer'
+import {ThunkDispatch} from "redux-thunk";
 import {Navigate} from "react-router-dom";
-
-type FormValuesType = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
+import {Action} from "redux";
+import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
+import {useAppDispatch, useAppSelector} from "../../App/store";
 
 export const Login = () => {
     const dispatch = useAppDispatch()
 
-    const isLoggedIn = useSelector(selectIsLoggedIn);
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const formik = useFormik({
         validate: (values) => {
@@ -39,24 +32,17 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
-            const resultAction = await dispatch(authActions.login(values));
-
-            if (login.rejected.match(resultAction)) {
-                if (resultAction.payload?.fieldsErrors?.length) {
-                    const error = resultAction.payload?.fieldsErrors[0];
-                    formikHelpers.setFieldError(error.field, error.error);
-                }
-            }
+        onSubmit: values => {
+            dispatch(loginTC(values));
         },
     })
 
     if (isLoggedIn) {
-        return <Navigate to={"/"}/>
+        return <Navigate to={"/"} />
     }
 
 
-    return <Grid container justifyContent="center">
+    return <Grid container >
         <Grid item xs={4}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
@@ -102,4 +88,3 @@ export const Login = () => {
         </Grid>
     </Grid>
 }
-

@@ -1,16 +1,23 @@
 import React, {useCallback, useEffect} from 'react';
 import s from './App.module.sass';
-import {ToDoMain} from "../Features/Todolists/ToDoMain";
+import {TodolistsList} from "../Features/Todolists/TodolistsList";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-import Header from "../Components/Header/Header";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "../Features/Auth/Login";
-import {useAppSelector} from "./store";
-import {useActions} from "../utils/redux-utils";
-import {authActions, authSelectors} from "../Features/Auth";
-import {selectIsInitialized, selectStatus} from "./selectors";
-import {appActions} from "./index";
-import {CircularProgress} from "@mui/material";
+
+import {useAppDispatch, useAppSelector} from "./store";
+import {CircularProgress, LinearProgress} from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
+import {logoutTC} from "../Features/Login/auth-reducer";
+
+import {Login} from "../Features/Login/Login";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {initializeAppTC} from "./app-reducer";
+
 
 
 const customTheme = createTheme({
@@ -26,21 +33,17 @@ const customTheme = createTheme({
 
 function App() {
 
-    const status = useAppSelector(selectStatus)
-    const isInitialized = useAppSelector(selectIsInitialized)
-    const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn)
-
-    const {logout} = useActions(authActions)
-    const {initializeApp} = useActions(appActions)
+    const status = useAppSelector((state) => state.app.status)
+    const isInitialized = useAppSelector((state) => state.app.isInitialized)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-
-            initializeApp()
-
+        dispatch(initializeAppTC())
     }, [])
 
     const logoutHandler = useCallback(() => {
-        logout()
+        dispatch(logoutTC())
     }, [])
 
     if (!isInitialized) {
@@ -52,10 +55,21 @@ function App() {
     return (
         <ThemeProvider theme={customTheme}>
             <div className={s.app}>
-                <Header/>
+                <Box sx={{ flexGrow: 1 }}>
+                    {/*<ErrorSnackbar/>*/}
+                    <AppBar position="static">
+                        <Toolbar>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                TodoList
+                            </Typography>
+                            <Button color="inherit">Login</Button>
+                        </Toolbar>
+                    </AppBar>
+                    {status === 'loading' && <LinearProgress/>}
+                </Box>
                 <div className={s.content}>
                     <Routes>
-                        <Route path={'/'} element={<ToDoMain/>}/>
+                        <Route path={'/'} element={<TodolistsList/>}/>
                         <Route path={'/login'} element={<Login/>}/>
 
                         <Route path={'/404'} element={<h1 style={{color: 'red'}}>404. Page not found</h1>}/>
