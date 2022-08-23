@@ -46,7 +46,7 @@ export const ToDoList = (props: TDListType) => {
                 </div>
             </div>
             <Divider style={{margin: 10}}/>
-            <Input getValue={addTask}/>
+            <Input addItem={addTask}/>
             {tasks[props.todoListId] && tasks[props.todoListId].map((task) => {
                 return <Tasks key={task.id}
                               title={task.title}/>

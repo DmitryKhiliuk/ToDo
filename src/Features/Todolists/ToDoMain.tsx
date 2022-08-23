@@ -1,28 +1,50 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {addTodoListTC, getTodoListTC} from "./Todolist-reducer";
 import {useAppDispatch, useAppSelector} from "../../App/store";
 import {ToDoList} from "./Todolist/ToDoList";
-import {Input} from "../../Components/Input/Input";
+import {Input, InputSubmitHelperType} from "../../Components/Input/Input";
 import {Grid, Paper} from "@mui/material";
 import s from './ToDoMain.module.sass'
+import {selectIsLoggedIn} from "../Auth/selectors";
+import {useActions} from "../../utils/redux-utils";
+import {todolistsActions} from "./index";
 
 export const ToDoMain = () => {
     const todolists = useAppSelector((state) => state.todolists)
+    const tasks = useAppSelector((state) => state.tasks)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(getTodoListTC())
+    const {getTodoListTC, addTodoListTC} = useActions(todolistsActions)
+
+    const addTodoList = useCallback(async (title: string, helper: InputSubmitHelperType) => {
+        const resultAction = await dispatch(addTodoListTC(title))
+
+        if (addTodoListTC.rejected.match(resultAction)) {
+            if (resultAction.payload?.errors?.length) {
+                const errorMessage = resultAction.payload?.errors[0]
+                helper.setError(errorMessage)
+            } else {
+                helper.setError('Some error occured')
+            }
+        } else {
+            helper.setTitle('')
+        }
     }, [])
 
-    const addTodoList = (value: string) => {
-        dispatch(addTodoListTC(value))
-    }
+    useEffect(() => {
+        if (!isLoggedIn) {
+            return
+        }
+        getTodoListTC()
+    }, [])
+
 
     return (
         <div>
             <Grid container>
                 <Paper elevation={3} className={s.input}>
-                    <Input getValue={addTodoList}/>
+                    <Input addItem={addTodoList}/>
                 </Paper>
             </Grid>
             <Grid container spacing={3} >

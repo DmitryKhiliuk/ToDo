@@ -1,11 +1,10 @@
 import {combineReducers} from "redux";
 import thunkMiddleware from 'redux-thunk'
-import {todolistsReducer} from "../Features/Todolists/Todolist-reducer";
-import {tasksReducer} from "../Features/Todolists/Tasks-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./index";
 import {authReducer} from "../Features/Auth/auth-reducer";
+import {tasksReducer, todolistsReducer} from "../Features/Todolists";
 
 export const rootReducer = combineReducers({
     app: appReducer,
@@ -14,12 +13,11 @@ export const rootReducer = combineReducers({
     tasks: tasksReducer
 })
 
-//export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
-
 export const store = configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
 })
+
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
 
