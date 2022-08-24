@@ -56,7 +56,7 @@ function App() {
         <ThemeProvider theme={customTheme}>
             <div className={s.app}>
                 <Box sx={{ flexGrow: 1 }}>
-                    {/*<ErrorSnackbar/>*/}
+                    <ErrorSnackbar/>
                     <AppBar position="static">
                         <Toolbar>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

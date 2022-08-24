@@ -1,11 +1,6 @@
 import React from 'react'
-
-
-import {useDispatch, useSelector} from 'react-redux'
-
 import {setAppErrorAC} from '../../App/app-reducer'
-
-import {AppRootStateType, useAppDispatch, useAppSelector} from "../../App/store";
+import {useAppDispatch, useAppSelector} from "../../App/store";
 import {AlertProps, Snackbar} from "@mui/material";
 
 function Alert(props: AlertProps) {
@@ -17,7 +12,7 @@ export function ErrorSnackbar() {
     const error = useAppSelector(state => state.app.error);
     const dispatch = useAppDispatch()
 
-    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return
         }
@@ -28,8 +23,11 @@ export function ErrorSnackbar() {
     const isOpen = error !== null;
 
     return (
-        <Snackbar open={isOpen} autoHideDuration={6000} /*onClose={handleClose}*/>
-            <Alert onClose={handleClose} severity="error">
+        <Snackbar open={isOpen}
+                  autoHideDuration={6000}
+                  onClose={handleClose}>
+            <Alert onClose={handleClose}
+                   severity="error">
                 {error}
             </Alert>
         </Snackbar>
