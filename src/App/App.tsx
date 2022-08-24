@@ -62,7 +62,7 @@ function App() {
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                 TodoList
                             </Typography>
-                            <Button color="inherit">Login</Button>
+                            {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
                         </Toolbar>
                     </AppBar>
                     {status === 'loading' && <LinearProgress/>}

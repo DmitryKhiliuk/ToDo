@@ -1,12 +1,15 @@
 import React from 'react'
-import {useFormik} from 'formik'
-import {useDispatch, useSelector} from 'react-redux'
+import {FormikHelpers, useFormik} from 'formik'
 import {loginTC} from './auth-reducer'
-import {ThunkDispatch} from "redux-thunk";
 import {Navigate} from "react-router-dom";
-import {Action} from "redux";
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../App/store";
+
+type FormValuesType = {
+    email: string,
+    password: string,
+    rememberMe: boolean
+}
 
 export const Login = () => {
     const dispatch = useAppDispatch()
@@ -32,17 +35,24 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        onSubmit: values => {
-            dispatch(loginTC(values));
+        onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
+            const resultAction = await dispatch(loginTC(values));
+
+            if (loginTC.rejected.match(resultAction)) {
+                if (resultAction.payload?.fieldsError?.length) {
+                    const error = resultAction.payload?.fieldsError[0];
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
         },
     })
 
     if (isLoggedIn) {
-        return <Navigate to={"/"} />
+        return <Navigate to={"/"}/>
     }
 
 
-    return <Grid container >
+    return <Grid container>
         <Grid item xs={4}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
