@@ -1,5 +1,5 @@
 import {TaskPriorities, TasksStateType, TaskStatuses} from "../../Api/types";
-import {addTaskAC, fetchTasksTC, removeTaskTC, tasksReducer, updateTaskAC} from "./Tasks-reducer";
+import {addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, updateTaskTC} from "./Tasks-reducer";
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./Todolists-reducer";
 
 let startState: TasksStateType = {};
@@ -35,18 +35,19 @@ test('correct task should be deleted from correct array', () => {
 });
 test('correct task should be added to correct array', () => {
     //const action = addTaskAC("juce", "todolistId2");
-    const action = addTaskAC({task:{
-        todoListId: "todolistId2",
-        title: "juce",
+    let task = {
+        todoListId: 'todolistId2',
+        title: 'juce',
         status: TaskStatuses.New,
-        addedDate: "",
-        deadline: "",
-        description: "",
+        addedDate: '',
+        deadline: '',
+        description: '',
         order: 0,
         priority: 0,
-        startDate: "",
-        id: "id exists"
-    }});
+        startDate: '',
+        id: 'id exists'
+    }
+    const action = addTaskTC.fulfilled(task, 'requestId', {title: task.title, todolistId: task.todoListId})
 
     const endState = tasksReducer(startState, action)
 
@@ -57,22 +58,24 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 });
 test('status of specified task should be changed', () => {
-    const action = updateTaskAC({taskId: "2", model: {status: TaskStatuses.New}, todolistId: "todolistId2"});
+    let updateModel = {taskId: '2', domainModel: {status: TaskStatuses.New}, todolistId: 'todolistId2'}
+    const action = updateTaskTC.fulfilled(updateModel, 'requestId', updateModel)
 
     const endState = tasksReducer(startState, action)
 
-    expect(endState["todolistId1"][1].status).toBe(TaskStatuses.Completed);
-    expect(endState["todolistId2"][1].status).toBe(TaskStatuses.New);
-});
+    expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed)
+    expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
+})
 test('title of specified task should be changed', () => {
-    const action = updateTaskAC({taskId: "2", model: {title: "yogurt"}, todolistId: "todolistId2"});
+    let updateModel = {taskId: '2', domainModel: {title: 'yogurt'}, todolistId: 'todolistId2'}
+    const action = updateTaskTC.fulfilled(updateModel, 'requestId', updateModel)
 
     const endState = tasksReducer(startState, action)
 
-    expect(endState["todolistId1"][1].title).toBe("JS");
-    expect(endState["todolistId2"][1].title).toBe("yogurt");
-    expect(endState["todolistId2"][0].title).toBe("bread");
-});
+    expect(endState['todolistId1'][1].title).toBe('JS')
+    expect(endState['todolistId2'][1].title).toBe('yogurt')
+    expect(endState['todolistId2'][0].title).toBe('bread')
+})
 test('new array should be added when new todolist is added', () => {
     const action = addTodolistAC({todolist: {
         id: "blabla",
