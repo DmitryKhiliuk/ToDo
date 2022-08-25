@@ -1,6 +1,6 @@
 import {TaskPriorities, TasksStateType, TaskStatuses} from "../../Api/types";
 import {addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, updateTaskTC} from "./Tasks-reducer";
-import {addTodolistAC, removeTodolistAC, fetchTodolistsTC} from "./Todolists-reducer";
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "./Todolists-reducer";
 
 let startState: TasksStateType = {};
 beforeEach(() => {
@@ -77,34 +77,37 @@ test('title of specified task should be changed', () => {
     expect(endState['todolistId2'][0].title).toBe('bread')
 })
 test('new array should be added when new todolist is added', () => {
-    const action = addTodolistAC({todolist: {
-        id: "blabla",
-        title: "new todolist",
-        order: 0,
-        addedDate: ''
-    }});
+    let payload = {
+        todolist: {
+            id: 'blabla',
+            title: 'new todolist',
+            order: 0,
+            addedDate: ''
+        }
+    }
+    const action = addTodolistTC.fulfilled(payload, 'requestId', payload.todolist.title)
 
     const endState = tasksReducer(startState, action)
 
 
-    const keys = Object.keys(endState);
-    const newKey = keys.find(k => k != "todolistId1" && k != "todolistId2");
+    const keys = Object.keys(endState)
+    const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2')
     if (!newKey) {
-        throw Error("new key should be added")
+        throw Error('new key should be added')
     }
 
-    expect(keys.length).toBe(3);
-    expect(endState[newKey]).toEqual([]);
-});
+    expect(keys.length).toBe(3)
+    expect(endState[newKey]).toEqual([])
+})
 test('propertry with todolistId should be deleted', () => {
-    const action = removeTodolistAC({id: "todolistId2"});
+    const action = removeTodolistTC.fulfilled({id: 'todolistId2'}, 'requestId', 'todolistId2')
 
     const endState = tasksReducer(startState, action)
 
-    const keys = Object.keys(endState);
+    const keys = Object.keys(endState)
 
-    expect(keys.length).toBe(1);
-    expect(endState["todolistId2"]).not.toBeDefined();
+    expect(keys.length).toBe(1)
+    expect(endState['todolistId2']).not.toBeDefined()
 });
 
 test('empty arrays should be added when we set todolists', () => {
