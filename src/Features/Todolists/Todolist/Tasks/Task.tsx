@@ -25,8 +25,8 @@ export const Task = React.memo((props: TaskPropsType) => {
         props.changeTaskTitle(props.task.id, newValue, props.todolistId)
     }, [props.task.id, props.todolistId]);
     return (
-        <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}>
-            <Paper elevation={2} className={s.task} style={{background: '#FFF3B2'}}>
+        <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''} >
+            <Paper elevation={2} className={s.task}  style={props.task.status === 2 ? {background: '#FFF3B2'}  : {background: '#FFFFFF'}} >
                 <div>
                     <Checkbox checked={props.task.status === TaskStatuses.Completed}
                               color="primary"
@@ -35,9 +35,6 @@ export const Task = React.memo((props: TaskPropsType) => {
                     <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
                 </div>
                 <div>
-                    <IconButton aria-label="delete" size="small" color={'primary'}>
-                        <CreateIcon />
-                    </IconButton>
                     <IconButton aria-label="delete" size="small" color={'primary'} onClick={onClickHandler}>
                         <DeleteIcon />
                     </IconButton>

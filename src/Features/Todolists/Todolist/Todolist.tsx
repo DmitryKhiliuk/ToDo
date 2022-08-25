@@ -51,7 +51,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.todolist.id), [props.todolist.id, props.changeFilter])
     const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.todolist.id), [props.todolist.id, props.changeFilter])
 
-
+    let heightForTodoList = props.tasks.length * 52.5 + 'px'
     let tasksForTodolist = props.tasks
 
     if (props.todolist.filter === 'active') {
@@ -61,44 +61,43 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
 
+
     return (
-        <div>
+        <div className={s.todolist}>
             <div className={s.titleBlock}>
                 <div className={s.title}>
                     <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
                 </div>
                 <div>
-                    <IconButton aria-label="delete" size="small" color={'primary'}>
-                        <CreateIcon/>
-                    </IconButton>
-                    <IconButton onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}>
+
+                    <IconButton onClick={removeTodolist} color={'primary'} disabled={props.todolist.entityStatus === 'loading'}>
                         <DeleteIcon/>
                     </IconButton>
                 </div>
             </div>
             <Divider style={{margin: 10}}/>
             <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === 'loading'}/>
-            {
-                tasksForTodolist && tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.todolist.id}
-                                                                    removeTask={props.removeTask}
-                                                                    changeTaskTitle={props.changeTaskTitle}
-                                                                    changeTaskStatus={props.changeTaskStatus}
-                />)
-            }
+            <div style={{height: heightForTodoList}}>
+                {
+                    tasksForTodolist && tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.todolist.id}
+                                                                        removeTask={props.removeTask}
+                                                                        changeTaskTitle={props.changeTaskTitle}
+                                                                        changeTaskStatus={props.changeTaskStatus}
+                    />)
+                }
+            </div>
 
-            <ButtonGroup size="small" variant="contained" fullWidth={true}>
-                <Button variant={props.todolist.filter === 'all' ? 'outlined' : 'text'}
-                        onClick={onAllClickHandler}
-
-                >All
+            <ButtonGroup size="small" variant="contained" fullWidth={true} className={s.button}>
+                <Button variant={props.todolist.filter === 'all' ? 'outlined' : 'contained'}
+                        onClick={onAllClickHandler}>All
                 </Button>
-                <Button variant={props.todolist.filter === 'active' ? 'outlined' : 'text'}
+                <Button variant={props.todolist.filter === 'active' ? 'outlined' : 'contained'}
                         onClick={onActiveClickHandler}
                         color={'primary'}>Active
                 </Button>
-                <Button variant={props.todolist.filter === 'completed' ? 'outlined' : 'text'}
+                <Button variant={props.todolist.filter === 'completed' ? 'outlined' : 'contained'}
                         onClick={onCompletedClickHandler}
-                        color={'secondary'}>Completed
+                        color={'primary'}>Completed
                 </Button>
             </ButtonGroup>
 
