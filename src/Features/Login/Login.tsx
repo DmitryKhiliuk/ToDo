@@ -28,7 +28,6 @@ export const Login = () => {
                     password: 'Password is required'
                 }
             }
-
         },
         initialValues: {
             email: '',
@@ -39,8 +38,8 @@ export const Login = () => {
             const resultAction = await dispatch(loginTC(values));
 
             if (loginTC.rejected.match(resultAction)) {
-                if (resultAction.payload?.fieldsError?.length) {
-                    const error = resultAction.payload?.fieldsError[0];
+                if (resultAction.payload?.fieldsErrors?.length) {
+                    const error = resultAction.payload?.fieldsErrors[0];
                     formikHelpers.setFieldError(error.field, error.error)
                 }
             }
@@ -51,24 +50,15 @@ export const Login = () => {
         return <Navigate to={"/"}/>
     }
 
-
-    return <Grid container>
+    return <Grid container justifyContent={'center'}>
         <Grid item xs={4}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
-                        <p>
-                            To log in get registered <a href={'https://social-network.samuraijs.com/'}
-                                                        target={'_blank'}>here</a>
-                        </p>
-                        <p>
-                            or use common test account credentials:
-                        </p>
-                        <p> Email: free@samuraijs.com
-                        </p>
-                        <p>
-                            Password: free
-                        </p>
+                        <p>To log in get registered <a href={'https://social-network.samuraijs.com/'} target={'_blank'}>here</a></p>
+                        <p>or use common test account credentials:</p>
+                        <p> Email: free@samuraijs.com</p>
+                        <p>Password: free</p>
                     </FormLabel>
                     <FormGroup>
                         <TextField

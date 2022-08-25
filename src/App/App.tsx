@@ -3,7 +3,6 @@ import s from './App.module.sass';
 import {TodolistsList} from "../Features/Todolists/TodolistsList";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Navigate, Route, Routes} from "react-router-dom";
-
 import {useAppDispatch, useAppSelector} from "./store";
 import {CircularProgress, LinearProgress} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -11,9 +10,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-
 import {logoutTC} from "../Features/Login/auth-reducer";
-
 import {Login} from "../Features/Login/Login";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {initializeAppTC} from "./app-reducer";

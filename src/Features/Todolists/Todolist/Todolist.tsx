@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import {Task} from "./Tasks/Task";
 import {Divider, IconButton} from "@mui/material";
-import CreateIcon from "@mui/icons-material/Create";
 import s from './Todolist.module.sass'
 import {FilterValuesType, TaskStatuses, TaskType, TodolistDomainType} from "../../../Api/types";
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
@@ -32,8 +31,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         if (demo) {
             return
         }
-        const thunk = fetchTasksTC(props.todolist.id)
-        dispatch(thunk)
+        dispatch(fetchTasksTC(props.todolist.id))
     }, [])
 
     const addTask = useCallback((title: string) => {

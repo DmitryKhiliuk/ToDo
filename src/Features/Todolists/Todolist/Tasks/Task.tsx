@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useCallback} from 'react';
 import {Checkbox, IconButton, Paper} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import CreateIcon from '@mui/icons-material/Create';
 import s from './Task.module.sass'
 import {TaskStatuses, TaskType} from "../../../../Api/types";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";

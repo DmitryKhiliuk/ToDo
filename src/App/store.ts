@@ -6,9 +6,7 @@ import {tasksReducer} from "../Features/Todolists/Tasks-reducer";
 import {appReducer} from "./app-reducer";
 import {todolistsReducer} from "../Features/Todolists/Todolists-reducer";
 import {authReducer} from "../Features/Login/auth-reducer";
-
-
-
+import {FieldErrorType} from "../Api/types";
 
 export const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -27,6 +25,7 @@ export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelecto
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
 export type AppDispatch = typeof store.dispatch
+export type ThunkError = { rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> } }
 
 
 // @ts-ignore

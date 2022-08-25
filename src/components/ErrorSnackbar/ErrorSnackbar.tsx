@@ -8,7 +8,7 @@ function Alert(props: AlertProps) {
 }
 
 export function ErrorSnackbar() {
-    //const [open, setOpen] = React.useState(true)
+
     const error = useAppSelector(state => state.app.error);
     const dispatch = useAppDispatch()
 
@@ -18,8 +18,6 @@ export function ErrorSnackbar() {
         }
         dispatch(setAppErrorAC({error: null}));
     }
-
-
     const isOpen = error !== null;
 
     return (

@@ -1,18 +1,13 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAPI} from "../Api/api";
-import {Dispatch} from "redux";
 import {setIsLoggedInAC} from "../Features/Login/auth-reducer";
-import {FieldErrorType, LoginParamsType} from "../Api/types";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import {AxiosError} from "axios";
 
 
 export const initializeAppTC = createAsyncThunk('app/initializeApp', async (param, {dispatch}) => {
     const res = await authAPI.me()
     if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC({value: true}));
-    } else {}
-
+    }
 })
 
 
@@ -29,7 +24,6 @@ const slice = createSlice({
         },
         setAppStatusAC(state, action: PayloadAction<{status: RequestStatusType}>) {
             state.status = action.payload.status
-            // {...state, status: action.status}
         },
 
     },
