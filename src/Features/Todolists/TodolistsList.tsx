@@ -72,10 +72,10 @@ export const TodolistsList = ({demo = false}) => {
                     <AddItemForm addItem={addTodolist}/>
                 </Paper>
             </Grid>
-            <Grid container spacing={3} >
+            <Grid container spacing={3} justifyContent={'center'}>
                 {todolists && todolists.map((tl) => {
                     let allTodolistTasks = tasks[tl.id]
-                    return <Grid item xs={6} key={tl.id}>
+                    return <Grid item sm={8} md={6} xs={12} key={tl.id} >
                         <Paper elevation={3} className={s.todolist}> <Todolist todolist={tl}
                                                                                tasks={allTodolistTasks}
                                                                                removeTask={removeTask}

@@ -51,7 +51,7 @@ export const Login = () => {
     }
 
     return <Grid container justifyContent={'center'}>
-        <Grid item xs={4}>
+        <Grid item sm={5}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
