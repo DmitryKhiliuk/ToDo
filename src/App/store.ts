@@ -3,12 +3,12 @@ import thunkMiddleware from 'redux-thunk'
 import {configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {tasksReducer} from "../Features/Todolists/Tasks-reducer";
-import {appReducer} from "./app-reducer";
+import {appReducer, initializeAppWorkerSaga} from "./app-reducer";
 import {todolistsReducer} from "../Features/Todolists/Todolists-reducer";
 import {authReducer} from "../Features/Login/auth-reducer";
 import {FieldErrorType} from "../Api/types";
 import createSagaMiddleware from 'redux-saga'
-import {call, put, takeEvery} from 'redux-saga/effects'
+import {takeEvery} from 'redux-saga/effects'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -28,7 +28,7 @@ export const store = configureStore({
 sagaMiddleware.run(rootWatcher)
 
 function* rootWatcher() {
-
+    yield takeEvery('app/initializedAppAC', initializeAppWorkerSaga)
 }
 
 export const useAppDispatch: () => AppDispatch = useDispatch;

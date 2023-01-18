@@ -13,7 +13,8 @@ import Box from "@mui/material/Box";
 import {logoutTC} from "../Features/Login/auth-reducer";
 import {Login} from "../Features/Login/Login";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
-import {initializeAppTC} from "./app-reducer";
+import {initializedAppAC} from "./app-reducer";
+
 
 
 
@@ -45,7 +46,7 @@ function App() {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(initializedAppAC())
     }, [])
 
     const logoutHandler = useCallback(() => {

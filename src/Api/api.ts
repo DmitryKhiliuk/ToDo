@@ -45,7 +45,6 @@ export const todolistsAPI = {
 
 export const authAPI = {
     login(data: LoginParamsType) {
-        console.log('api')
         const promise = instance.post<ResponseType<{userId?: number}>>('auth/login', data);
         return promise;
     },
