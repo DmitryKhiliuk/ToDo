@@ -7,6 +7,10 @@ import {appReducer} from "./app-reducer";
 import {todolistsReducer} from "../Features/Todolists/Todolists-reducer";
 import {authReducer} from "../Features/Login/auth-reducer";
 import {FieldErrorType} from "../Api/types";
+import createSagaMiddleware from 'redux-saga'
+import {call, put, takeEvery} from 'redux-saga/effects'
+
+const sagaMiddleware = createSagaMiddleware();
 
 export const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -17,8 +21,15 @@ export const rootReducer = combineReducers({
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
+    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware, sagaMiddleware)
+
 })
+
+sagaMiddleware.run(rootWatcher)
+
+function* rootWatcher() {
+
+}
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
