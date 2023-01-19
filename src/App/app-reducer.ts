@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {authAPI} from "../Api/api";
 import {setIsLoggedInAC} from "../Features/Login/auth-reducer";
 import {call, put} from "redux-saga/effects";
@@ -9,6 +9,7 @@ export function* initializeAppWorkerSaga() {
     const res:AxiosResponse = yield call(authAPI.me)
     if (res.data.resultCode === 0) {
         yield put(setIsLoggedInAC({value: true}));
+        yield put(initializedAppSuccessAC());
     } else {
         alert('error')
     }
@@ -36,7 +37,8 @@ const slice = createSlice({
         setAppStatusAC(state, action: PayloadAction<{status: RequestStatusType}>) {
             state.status = action.payload.status
         },
-        initializedAppAC(state){
+        initializedAppAC(){},
+        initializedAppSuccessAC(state) {
             state.isInitialized = true
         }
 
@@ -49,7 +51,7 @@ const slice = createSlice({
 })
 
 export const appReducer = slice.reducer
-export const {setAppErrorAC, setAppStatusAC, initializedAppAC} = slice.actions
+export const {setAppErrorAC, setAppStatusAC, initializedAppAC, initializedAppSuccessAC} = slice.actions
 
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
