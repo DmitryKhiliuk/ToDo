@@ -47,11 +47,11 @@ function App() {
 
     useEffect(() => {
         dispatch(initializedAppAC())
-    }, [])
+    }, [dispatch])
 
     const logoutHandler = useCallback(() => {
         dispatch(logoutTC())
-    }, [])
+    }, [dispatch])
 
     if (!isInitialized) {
         return <div

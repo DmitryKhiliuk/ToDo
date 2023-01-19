@@ -5,12 +5,30 @@ import {TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from "../..
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {setAppStatusAC} from "../../App/app-reducer";
 import {AppRootStateType, ThunkError} from "../../App/store";
-import {AxiosError} from "axios";
+import {AxiosError, AxiosResponse} from "axios";
+import {call, put} from "redux-saga/effects";
+
 
 
 const initialState: TasksStateType = {}
 
-export const fetchTasksTC = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, string, ThunkError>('tasks/fetchTasks', async (todolistId, thunkAPI) => {
+
+export function* fetchTasksWorkerSaga(action: any) {
+    yield put(setAppStatusAC({status: 'loading'}))
+    try {
+        const res:AxiosResponse = yield call(todolistsAPI.getTasks, action.payload.todolistId)
+        const tasks = res.data.items
+        console.log(tasks)
+        yield put(successTasksAC({tasks, todolistId: action.payload.todolistId}))
+        yield put(setAppStatusAC({status: 'succeeded'}))
+        //return {tasks, todolistId: action.payload}
+    } catch (error) {
+       // return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
+        console.log('error')
+    }
+}
+
+/*export const fetchTasksTC = createAsyncThunk<{ tasks: TaskType[], todolistId: string }, string, ThunkError>('tasks/fetchTasks', async (todolistId, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await todolistsAPI.getTasks(todolistId)
@@ -20,7 +38,7 @@ export const fetchTasksTC = createAsyncThunk<{ tasks: TaskType[], todolistId: st
     } catch (error) {
         return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
     }
-})
+})*/
 
 export const removeTaskTC = createAsyncThunk('tasks/removeTask', async (param: { taskId: string, todolistId: string }, thunkAPI) => {
     const res = await todolistsAPI.deleteTask(param.todolistId, param.taskId)
@@ -80,7 +98,12 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTask', async (param: {
 const slice = createSlice({
     name: 'tasks',
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        fetchTasksAC(state, action) {},
+        successTasksAC(state, action) {
+            state[action.payload.todolistId] = action.payload.tasks
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(addTodolistTC.fulfilled, (state, action) => {
@@ -94,9 +117,9 @@ const slice = createSlice({
                     state[tl.id] = []
                 })
             })
-            .addCase(fetchTasksTC.fulfilled, (state, action) => {
+            /*.addCase(fetchTasksTC.fulfilled, (state, action) => {
                 state[action.payload.todolistId] = action.payload.tasks
-            })
+            })*/
             .addCase(removeTaskTC.fulfilled, (state, action) => {
                 const index = state[action.payload.todolistId].findIndex(t => t.id === action.payload.taskId)
                 if (index > -1) {
@@ -117,6 +140,7 @@ const slice = createSlice({
 })
 
 export const tasksReducer = slice.reducer
+export const {fetchTasksAC, successTasksAC} = slice.actions
 
 
 // types

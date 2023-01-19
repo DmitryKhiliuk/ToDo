@@ -9,6 +9,8 @@ export function* initializeAppWorkerSaga() {
     const res:AxiosResponse = yield call(authAPI.me)
     if (res.data.resultCode === 0) {
         yield put(setIsLoggedInAC({value: true}));
+    } else {
+        alert('error')
     }
 }
 

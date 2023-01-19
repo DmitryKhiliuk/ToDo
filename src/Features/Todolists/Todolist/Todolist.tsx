@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {useAppDispatch} from "../../../App/store";
-import {fetchTasksTC} from "../Tasks-reducer";
+import {fetchTasksAC} from "../Tasks-reducer";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -31,7 +31,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         if (demo) {
             return
         }
-        dispatch(fetchTasksTC(props.todolist.id))
+        dispatch(fetchTasksAC({todolistId: props.todolist.id}))
     }, [])
 
     const addTask = useCallback((title: string) => {
