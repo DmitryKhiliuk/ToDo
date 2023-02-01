@@ -3,7 +3,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "./Todolists-reducer";
 import {TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from "../../Api/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
-import {setAppStatusAC} from "../../App/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "../../App/app-reducer";
 import {AppRootStateType, ThunkError} from "../../App/store";
 import {AxiosError, AxiosResponse} from "axios";
 import {call, put} from "redux-saga/effects";
@@ -22,9 +22,14 @@ export function* fetchTasksWorkerSaga(action: any) {
         yield put(successTasksAC({tasks, todolistId: action.payload.todolistId}))
         yield put(setAppStatusAC({status: 'succeeded'}))
         //return {tasks, todolistId: action.payload}
-    } catch (error) {
+        console.log(AxiosError)
+    } catch (error: any) {
+
+        yield put(setAppErrorAC({error: error.message ? error.message : 'Some error occurred'}))
+
+        yield put(setAppStatusAC({status: 'failed'}))
        // return handleAsyncServerNetworkError(error as AxiosError, thunkAPI)
-        console.log('error')
+        console.log(error)
     }
 }
 
@@ -102,7 +107,10 @@ const slice = createSlice({
         fetchTasksAC(state, action) {},
         successTasksAC(state, action) {
             state[action.payload.todolistId] = action.payload.tasks
-        }
+        },
+        /*getTasksFailureAC() {
+
+        }*/
     },
     extraReducers: (builder) => {
         builder

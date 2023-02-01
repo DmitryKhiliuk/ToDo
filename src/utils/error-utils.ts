@@ -28,3 +28,5 @@ export const handleAsyncServerNetworkError = (error: AxiosError,
 
     return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
 }
+
+
