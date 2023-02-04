@@ -11,7 +11,8 @@ export function* initializeAppWorkerSaga() {
         yield put(setIsLoggedInAC({value: true}));
         yield put(initializedAppSuccessAC());
     } else {
-        alert('error')
+        yield put(setAppErrorAC({error: res.data.messages ? res.data.messages[0] : 'Some error occurred'}))
+        yield put(setAppStatusAC({status: 'failed'}))
     }
 }
 /*export const initializeAppTC = createAsyncThunk('app/initializeApp', async (param, {dispatch}) => {

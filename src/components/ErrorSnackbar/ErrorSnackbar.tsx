@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../App/store";
 import {AlertProps, Snackbar} from "@mui/material";
 
 function Alert(props: AlertProps) {
+    console.log('error')
     return <Alert elevation={6} variant="filled" {...props} />
 }
 
